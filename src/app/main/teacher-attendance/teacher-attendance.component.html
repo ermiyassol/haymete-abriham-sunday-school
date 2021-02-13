@@ -1,0 +1,245 @@
+<nz-divider nzText="የመምህር መቆጣጠሪያ"></nz-divider>
+<form
+  nz-form
+  nz-row
+  nzJustify="space-between"
+  [formGroup]="form"
+  class="login-form"
+  (ngSubmit)="onSubmit()"
+  *ngIf="addingMode || editMode"
+>
+  <nz-form-item nz-col nzSpan="24" [nzMd]="{ span: 3 }">
+    <nz-form-control nzErrorTip="ለጥያቂው መልስ ይምረጡ!!">
+      <label for="status">ትምህርት ነበር ?</label>
+      <nz-select formControlName="status" id="status">
+        <nz-option [nzValue]="false" nzLabel="አልነበረም"></nz-option>
+        <nz-option [nzValue]="true" nzLabel="አዎ ነበር"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item
+    nz-col
+    nzSpan="24"
+    [nzMd]="{ span: 4 }"
+    *ngIf="form.value.status"
+  >
+    <nz-form-control nzErrorTip="በዕለቱ የነበረውን መርሀግብር ይምረጡ!!">
+      <label for="courseName">የትምህርቱ ስም</label>
+      <nz-select formControlName="courseName" id="courseName">
+        <nz-option
+          *ngFor="let course of Courses"
+          [nzValue]="course"
+          [nzLabel]="course"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item
+    nz-col
+    nzSpan="24"
+    [nzMd]="{ span: 6 }"
+    *ngIf="form.value.status"
+  >
+    <nz-form-control nzErrorTip="የአባሉን ስም ያስገባ!!">
+      <label for="teacherName">የመምህሩ ስም</label>
+      <nz-input-group>
+        <input
+          type="text"
+          nz-input
+          id="teacherName"
+          formControlName="teacherName"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item
+    nz-col
+    nzSpan="12"
+    [nzMd]="{ span: 4 }"
+    *ngIf="form.value.status"
+  >
+    <nz-form-control nzErrorTip="ሰዓት ይምረጡ!!">
+      <label for="start">የተጀመረበት ሰዓት</label>
+      <nz-time-picker
+        formControlName="start"
+        id="start"
+        [nzUse12Hours]="true"
+        [nzMinuteStep]="15"
+        nzFormat="h:mm"
+      ></nz-time-picker>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item
+    nz-col
+    nzSpan="12"
+    [nzMd]="{ span: 4 }"
+    *ngIf="form.value.status"
+  >
+    <nz-form-control nzErrorTip="ሰዓት ይምረጡ!!">
+      <label for="end">ያለቀበት ሰዓት</label>
+      <nz-time-picker
+        formControlName="end"
+        id="end"
+        [nzUse12Hours]="true"
+        [nzMinuteStep]="15"
+        nzFormat="h:mm"
+      ></nz-time-picker>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!--  -->
+  <nz-form-item
+    nz-col
+    nzSpan="24"
+    [nzMd]="{ span: 24 }"
+    formArrayName="content"
+    *ngIf="form.value.status"
+  >
+    <label>በትምህርቱ ውስጥ የተካተቱ ንዑስ ርዕሶች ዝርዝር</label>
+    <nz-form-control
+      nzErrorTip="ዝርዝር መረጃ ያስገቡ!!"
+      *ngFor="let ingredient of form.get('content')['controls']; let id = index"
+    >
+      <input
+        class="passenger-input"
+        [formControlName]="id"
+        nz-input
+        placeholder="ዝርዝር ይጻፉ!!"
+      />
+      <i
+        nz-icon
+        nzType="delete"
+        nzTheme="outline"
+        class="dynamic-delete-button"
+        (click)="onDeleteContent(id)"
+      ></i>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item
+    nz-col
+    nzSpan="24"
+    [nzMd]="{ span: 18 }"
+    *ngIf="form.value.status"
+  >
+    <nz-form-control title="ዝርዝር ርዕሶችን ለማስገባት ይህን ይጫኑ">
+      <button
+        nz-button
+        type="button"
+        nzType="dashed"
+        class="add-button"
+        (click)="addContent()"
+      >
+        <i nz-icon nzType="plus"></i>
+        ዝርዝር መረጃ ማስገቢያ
+      </button>
+    </nz-form-control>
+  </nz-form-item>
+  <!--  -->
+
+  <button
+    nz-button
+    class="search-button"
+    nzType="primary"
+    nz-col
+    nzSpan="24"
+    [nzMd]="{ span: 16 }"
+  >
+    <i nz-icon nzType="send" nzTheme="outline"></i>
+    መረጃውን ላክ
+  </button>
+</form>
+<nz-divider nzText="በቅርቡ የሚደረጉ እና የተደረጉ መርሀግብሮች ዝርዝር"></nz-divider>
+<nz-table #nzTable [nzData]="listOfData" nzTableLayout="fixed">
+  <thead>
+    <tr>
+      <th nzWidth="60px"></th>
+      <th>የመርሀግብሩ ቀን</th>
+      <th>የመርሀግብሩ አይነት</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let data of nzTable.data">
+      <tr>
+        <td
+          [nzExpand]="expandSet.has(data.id)"
+          (nzExpandChange)="onExpandChange(data.id, $event)"
+        ></td>
+        <td>
+          {{ data.day }} - {{ data.month }} - {{ data.date }} - {{ data.year }}
+        </td>
+        <td>{{ data.description }}</td>
+      </tr>
+      <tr [nzExpand]="expandSet.has(data.id)">
+        <nz-empty
+          [nzNotFoundContent]="contentTpl"
+          *ngIf="lengthCalculator(data.lecture) === 0"
+        ></nz-empty>
+        <ng-template #contentTpl>
+          <h4>መረጃ አልገባም!!</h4>
+          <button
+            nz-button
+            type="button"
+            nzType="primary"
+            (click)="enableAdding(data.id)"
+          >
+            <i nz-icon nzType="file-add" nzTheme="outline"></i> መረጃ ማስገቢያ
+          </button>
+        </ng-template>
+        <nz-empty
+          [nzNotFoundContent]="contentTp3"
+          *ngIf="data.lecture.status === false"
+        ></nz-empty>
+        <ng-template #contentTp3>
+          <h4>ትምህርት / ኮርስ አልነበረም!!</h4>
+          <button
+            nz-button
+            type="button"
+            nzType="primary"
+            (click)="enableEditing(data.id)"
+          >
+            <i nz-icon nzType="edit" nzTheme="outline"></i> ማስተካከያ
+          </button>
+        </ng-template>
+        <nz-descriptions
+          nzTitle="በመርሀግብሩ ላይ ስለነበረው ትምህርት መረጃ"
+          nzBordered
+          nzSize="small"
+          *ngIf="data.lecture.courseName"
+        >
+          <nz-descriptions-item nzTitle="የመምህሩ ስም">{{
+            data.lecture.teacherName
+          }}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="የትምህርቱ ስም">{{
+            data.lecture.courseName
+          }}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="ትምህርቱ የተሰጠበት ሰዓት"
+            >ከ {{ data.lecture.duration }}</nz-descriptions-item
+          >
+          <nz-descriptions-item nzTitle="የትምህርቱ ንዑስ ርዕሶች" [nzSpan]="3">
+            <ul *ngIf="data.lecture.content">
+              <li *ngFor="let title of data.lecture.content">
+                {{ title }}
+              </li>
+            </ul>
+            <p *ngIf="!data.lecture.content">ትምህርቱ ንዑስ ርዕሶች የሉትም!!</p>
+          </nz-descriptions-item>
+          <nz-descriptions-item nzTitle="" [nzSpan]="3">
+            <button
+              nz-button
+              type="button"
+              nzType="primary"
+              (click)="enableEditing(data.id)"
+            >
+              <i nz-icon nzType="edit" nzTheme="outline"></i> ማስተካከያ
+            </button>
+          </nz-descriptions-item>
+        </nz-descriptions>
+      </tr>
+    </ng-container>
+  </tbody>
+</nz-table>
+<!-- [nzMd] [nzSm] -->

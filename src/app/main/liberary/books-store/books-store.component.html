@@ -1,0 +1,147 @@
+<nz-divider nzText="አዲስ መጽሐፍ ለመጨመር" *ngIf="accessControl == ''"></nz-divider>
+
+<form
+  nz-form
+  nz-row
+  nzJustify="space-between"
+  [formGroup]="form"
+  class="login-form"
+  (ngSubmit)="submitForm()"
+  *ngIf="accessControl == ''"
+>
+  <nz-form-item nz-col nzSpan="24" [nzMd]="{ span: 6 }">
+    <nz-form-control nzErrorTip="የመጽሐፉን ኮድ ያስገቡ!!">
+      <label for="id">የመጽሐፉ ኮድ </label>
+      <nz-input-group>
+        <input type="number" nz-input id="id" formControlName="id" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-col nzSpan="24" [nzMd]="{ span: 10 }">
+    <nz-form-control nzErrorTip="የመጽሐፉ ስም ያስገቡ!!">
+      <label for="name">የመጽሐፉ ስም </label>
+      <nz-input-group>
+        <input type="text" nz-input id="name" formControlName="name" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-col nzSpan="24" [nzMd]="{ span: 6 }">
+    <nz-form-control nzErrorTip="የመጽሐፉን አይነት ይምረጡ!!">
+      <label for="type">የመጽሐፉን አይነት</label>
+      <nz-select formControlName="type" id="type">
+        <nz-option nzValue="አጋዥ" nzLabel="አጋዥ መጽሐፍት"></nz-option>
+        <nz-option nzValue="ኮርስ" nzLabel="የኮርስ መጽሐፍ"></nz-option>
+        <nz-option nzValue="አስኳላ" nzLabel="የአስኳላ መጽሐፍ"></nz-option>
+        <nz-option nzValue="መጽሔት" nzLabel="መጽሔት"></nz-option>
+        <nz-option nzValue="ጋዜጣ" nzLabel="ጋዜጣ"></nz-option>
+        <nz-option nzValue="ሌሎች" nzLabel="ሌሎች"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-col nzSpan="24" [nzMd]="{ span: 24 }">
+    <button nz-button nzType="primary">
+      <i nz-icon nzType="appstore-add" nzTheme="outline"></i> የመጽሐፉን መረጃ
+      {{ editMode ? "አድስ" : "አስገባ" }}
+    </button>
+  </nz-form-item>
+</form>
+
+<nz-divider
+  nzText="በቤተ መጽሐፍት ውስጥ የሚገኙ የመጽሐፍት ዝርዝር"
+  *ngIf="listOfData.length || accessControl == 'users'"
+></nz-divider>
+
+<nz-divider
+  nzDashed
+  [nzText]="text"
+  *ngIf="!listOfData.length && accessControl == ''"
+>
+  <ng-template #text>
+    <button nz-button nzType="dashed" (click)="viewLibraryBooks()">
+      የመጽሐፍትን ዝርዝር መረጃ አሳየኝ
+    </button>
+  </ng-template>
+</nz-divider>
+<nz-input-group
+  nzSearch
+  [nzAddOnAfter]="suffixIconButton"
+  *ngIf="listOfData.length"
+  [ngClass]="{ searchMargin: accessControl === 'users' }"
+>
+  <input
+    type="text"
+    nz-input
+    placeholder="በኮድ፣ በመጽሐፉ ስም፣ አይነት እና ሁኔታ መፈለጊያ"
+    [(ngModel)]="search"
+  />
+</nz-input-group>
+<ng-template #suffixIconButton>
+  <button nz-button nzType="primary" nzSearch>
+    <i nz-icon nzType="search"></i>
+  </button>
+</ng-template>
+<br />
+<br />
+
+<nz-table
+  [nzData]="listOfData"
+  [nzPageSize]="50"
+  [nzScroll]="{ x: '500px', y: '500px' }"
+  *ngIf="listOfData.length"
+  [ngClass]="{ userMargin: accessControl === 'users' }"
+>
+  <thead>
+    <tr>
+      <th nzWidth="100px">የመጽሐፉ ኮድ</th>
+      <!-- <th nzWidth="100px">Age</th> -->
+      <th nzWidth="150px">የመጽሐፉ ስም</th>
+      <th nzWidth="70px">የመጸሐፉ አይነት</th>
+      <th nzWidth="40px" *ngIf="accessControl == ''"></th>
+      <th nzWidth="100px" *ngIf="accessControl == 'users'">የመጽሐፉ ሁኔታ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let data of listOfData | bookSearch: search; let id = index"
+      [ngClass]="{ redBg: !data.status }"
+    >
+      <!-- <tr> -->
+      <td>ሐአ/መ/{{ data.id }}</td>
+      <td>{{ data.name }}</td>
+      <td>{{ data.type }}</td>
+      <td *ngIf="accessControl == 'users'">
+        {{ data.status ? "መጽሐፉ አለ" : "መጽሐፉ ተከራይቷል" }}
+      </td>
+      <td *ngIf="accessControl == ''">
+        <button nz-button nzType="primary" (click)="editBook(id)">
+          <i nz-icon nzType="edit"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<br />
+<nz-collapse *ngIf="accessControl == 'users'">
+  <nz-collapse-panel nzHeader="መጽሐፍት አፈላለግ እንዴት ነው?" [nzActive]="false">
+    <p style="margin: 0">
+      - መጽሐፍትን በብዙ ዘርፍ መፈልግ ይቻላል ከነዚህም ውስጥ ፦ <br />1. በመጽሐፍት ኮድ - 'ሐአ/መ/' ይህን
+      ሳንጽፍ ቁጥሩን ብቻ በማስገባት መፈለግ እንችላለን። <br />2. በመጽሀፍት ስም - የመጽሀፉን ሙሉ ስም መጻፍ
+      አይጠበቅብንም የመጽሀፉን ስም የመጀመሪያ የተወሰኑ ፊደላትን ከጻፍን ያመጣልናል። <br />3. በመጽሐፍት አይነት
+      (ኮርስ፣ አጋዥ፣ አስኳላ፣ መጽሔት) እነዚህን መፈለጊያው ላይ በመጻፍ በመጽሐፍቱ ይዘት ለይቶ ማውጣት ይቻላል።
+      <br />4. የመጨረሻው መጽሐፍቶች መከራየታቸውን እና እለመከራየታቸውን ለማወቅ ወይም በቤተ መጽሐፍት ውስጥ በዚህ
+      ቀን እንደሚገኙ እና እንደማይገኙ ለማወቅ የመፈለጊያ መንገድ ሲሆን 'true' ብለን ስንጽፍ በቤተ መጽሐፍት በዚህ
+      ሰአት ያሉትን ሲያወጣልን 'false' ይህን ስንጽፍ ደግሞ በዚህ ሰአት በቤተ መጽሐፍት የማናገኛቸውን መጽሐፍት
+      ያሳየናል። የማናገኛቸው መጽሐፍት ማለት አባላት ተውሰዋቸው ያልተመለሱ መጽሐፍትን ለመጥቀስ ነው።
+      <br /><br />ችግሮች ከገጠመዎት በዚህ ስልክ ያሳውቁን <br />- 0912880778 <br />-
+      0920791419
+      <br />
+      <br />
+      "መጽሐፍቶችንም ሁልጊዜ አንብብ እሱ ልቡናህን ያጸናሃል . . ."
+      <br />
+      መ.ሲራ 6 ፥ 8
+    </p>
+  </nz-collapse-panel>
+</nz-collapse>

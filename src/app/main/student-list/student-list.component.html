@@ -1,0 +1,165 @@
+<h2 nz-col nzSpan="24">የሰንበት ት/ቤት አባላት ዝርዝር</h2>
+<!-- search box required -->
+<hr />
+<br />
+<nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+  <input
+    type="text"
+    nz-input
+    placeholder="input search text"
+    [(ngModel)]="search"
+  />
+</nz-input-group>
+<ng-template #suffixIconButton>
+  <button nz-button nzType="primary" nzSearch>
+    <i nz-icon nzType="search"></i>
+  </button>
+</ng-template>
+
+<br />
+<br />
+<br />
+<nz-table
+  #fixedTable
+  [nzData]="listOfStudents"
+  [nzScroll]="{ x: '1000px', y: '500px' }"
+>
+  <thead>
+    <tr>
+      <!-- <th nzLeft>Full Name</th>
+      <th nzLeft>Age</th>
+      <th>Column 1</th>
+      <th>Column 2</th>
+      <th>Column 3</th>
+      <th>Column 4</th>
+      <th>Column 5</th>
+      <th>Column 6</th>
+      <th>Column 7</th>
+      <th>Column 8</th>
+      <th nzRight>Action</th> -->
+      <th
+        nzLeft
+        (click)="sort('id')"
+        *ngIf="
+          User.role != 'ትምህርት ክፍል' &&
+          User.role != 'መዝሙር ክፍል' &&
+          User.role != 'ጽ/ቤት'
+        "
+      >
+        ፋይል ቁ.
+      </th>
+      <th nzLeft (click)="sort('firstName')">ሙሉ ስም</th>
+      <th (click)="sort('hollyName')">ክርስትና ስም</th>
+      <th (click)="sort('gender')">ጾታ</th>
+      <th
+        (click)="sort('birthDate')"
+        *ngIf="User.role != 'ትምህርት ክፍል' && User.role != 'መዝሙር ክፍል'"
+      >
+        እድሜ
+      </th>
+      <th (click)="sort('hollyResponsibility')">ስልጣነ ክህነት</th>
+      <th
+        (click)="sort('villageName')"
+        *ngIf="User.role != 'ትምህርት ክፍል' && User.role != 'መዝሙር ክፍል'"
+      >
+        ልዪ አድራሻ
+      </th>
+      <th (click)="sort('hollylevel')">ምድብ</th>
+      <th
+        (click)="sort('educationLevel')"
+        *ngIf="User.role != 'ትምህርት ክፍል' && User.role != 'መዝሙር ክፍል'"
+      >
+        የቀለም ትምህርት ደረጃ
+      </th>
+      <th (click)="sort('hollyEducationLevel')" *ngIf="User.role != 'መዝሙር ክፍል'">
+        መንፈሳዊ ትምህርት ደረጃ
+      </th>
+      <th (click)="sort('studentType')">የአባልነት አይነት</th>
+      <th
+        nzRight
+        *ngIf="
+          User.role != 'ትምህርት ክፍል' &&
+          User.role != 'መዝሙር ክፍል' &&
+          User.role != 'ጽ/ቤት'
+        "
+      ></th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- <tr *ngFor="let student of fixedTable.data | searchEngin: search; let id = index"">
+      <td nzLeft>{{ data.name }}</td>
+      <td nzLeft>{{ data.age }}</td>
+      <td nzBreakWord>{{ data.address }}</td>
+      <td nzBreakWord>{{ data.address }}</td>
+      <td nzBreakWord>{{ data.address }}</td>
+      <td nzBreakWord>{{ data.address }}</td>
+      <td nzBreakWord>{{ data.address }}</td>
+      <td nzBreakWord>{{ data.address }}</td>
+      <td nzBreakWord>{{ data.address }}</td>
+      <td nzBreakWord>{{ data.address }}</td>
+      <td nzRight>
+        <a>action</a>
+      </td>
+    </tr> -->
+
+    <tr
+      *ngFor="
+        let student of fixedTable.data | searchEngin: search;
+        let id = index
+      "
+    >
+      <td
+        *ngIf="
+          User.role != 'ትምህርት ክፍል' &&
+          User.role != 'መዝሙር ክፍል' &&
+          User.role != 'ጽ/ቤት'
+        "
+        nzLeft
+      >
+        {{ student.id }}
+      </td>
+      <td nzLeft>
+        {{ student.firstName }} {{ student.middleName }}
+        {{ student.lastName }}
+      </td>
+      <td nzBreakWord>{{ student.hollyName }}</td>
+      <td nzBreakWord>{{ student.gender }}</td>
+      <td
+        nzBreakWord
+        *ngIf="User.role != 'ትምህርት ክፍል' && User.role != 'መዝሙር ክፍል'"
+      >
+        {{ student.birthDate | ageCalculator }}
+      </td>
+      <td nzBreakWord>{{ student.hollyResponsibility }}</td>
+      <td
+        nzBreakWord
+        *ngIf="User.role != 'ትምህርት ክፍል' && User.role != 'መዝሙር ክፍል'"
+      >
+        {{ student.villageName }}
+      </td>
+      <td nzBreakWord>{{ student.hollylevel }}</td>
+      <td
+        nzBreakWord
+        *ngIf="User.role != 'ትምህርት ክፍል' && User.role != 'መዝሙር ክፍል'"
+      >
+        {{ student.educationLevel }}
+      </td>
+      <td nzBreakWord *ngIf="User.role != 'መዝሙር ክፍል'">
+        {{ student.hollyEducationLevel }}
+      </td>
+      <td nzBreakWord>{{ student.studentType }}</td>
+      <td
+        nzRight
+        *ngIf="
+          User.role != 'ትምህርት ክፍል' &&
+          User.role != 'መዝሙር ክፍል' &&
+          User.role != 'ጽ/ቤት'
+        "
+      >
+        <button nz-button nzType="primary" (click)="onViewProfile(id)">
+          <i nz-icon nzType="user"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

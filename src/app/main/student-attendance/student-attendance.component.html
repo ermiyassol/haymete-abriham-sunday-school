@@ -1,0 +1,158 @@
+<nz-divider
+  nzText="የአባላት ተሳትፎ(ቀሪ) መቆጣጠሪያ"
+  *ngIf="editMode || addingMode"
+></nz-divider>
+<nz-list nzBordered nzSize="small" *ngIf="editMode || addingMode">
+  <nz-list-header>
+    <button nz-button type="button" (click)="attendanceFiltering('ሁሉም')">
+      ሁሉም አባላት
+    </button>
+    <button nz-button type="button" (click)="attendanceFiltering('ወጣት 1')">
+      ወጣት 1 (ቀዳማይ)
+    </button>
+    <button nz-button type="button" (click)="attendanceFiltering('ወጣት 2')">
+      ወጣት 2 (ካዕላይ)
+    </button>
+  </nz-list-header>
+  <nz-list-item *ngFor="let student of studentsList; let id = index">
+    <span>
+      <i nz-icon nzType="user" nzTheme="outline"></i>
+      {{ student.id.substr(5, 4) }} - {{ student.fullName }}
+      <nz-radio-group [(ngModel)]="student.status">
+        <label nz-radio nzValue="present"
+          ><i nz-icon class="present" nzType="check" nzTheme="outline"></i
+        ></label>
+        <label nz-radio nzValue="absent"
+          ><i nz-icon class="absent" nzType="close" nzTheme="outline"></i
+        ></label>
+        <label nz-radio class="permission" nzValue="permission">ፈቃድ</label>
+      </nz-radio-group>
+    </span>
+  </nz-list-item>
+  <nz-list-footer>
+    <button nz-button [nzType]="'primary'" (click)="onSubmit()">
+      መረጃውን ላክ
+    </button>
+    <button nz-button class="danger" (click)="onCancel()">መመለሻ</button>
+  </nz-list-footer>
+</nz-list>
+<!--  -->
+<nz-divider
+  nzText="የመምህር መቆጣጠሪያ"
+  *ngIf="!editMode && !addingMode"
+></nz-divider>
+<nz-table
+  #nzTable
+  [nzData]="listOfData"
+  nzTableLayout="fixed"
+  *ngIf="!editMode && !addingMode"
+>
+  <thead>
+    <tr>
+      <th nzWidth="60px"></th>
+      <th>የመርሀግብሩ ቀን</th>
+      <th>የመርሀግብሩ አይነት</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let data of nzTable.data; let id = index">
+      <tr>
+        <td
+          [nzExpand]="expandSet.has(data.id)"
+          (nzExpandChange)="onExpandChange(data.id, $event)"
+        ></td>
+        <td>
+          {{ data.day }} - {{ data.month }} - {{ data.date }} - {{ data.year }}
+        </td>
+        <td>{{ data.description }}</td>
+      </tr>
+      <tr [nzExpand]="expandSet.has(data.id)">
+        <nz-empty
+          [nzNotFoundContent]="contentTpl"
+          *ngIf="!data.members.status"
+        ></nz-empty>
+        <ng-template #contentTpl>
+          <h4>መረጃ አልገባም!!</h4>
+          <button
+            nz-button
+            type="button"
+            nzType="primary"
+            (click)="enableAdding(data.id)"
+          >
+            <i nz-icon nzType="file-add" nzTheme="outline"></i> መረጃ ማስገቢያ
+          </button>
+        </ng-template>
+        <nz-descriptions
+          nzSize="small"
+          nzTitle="በመርሀግብሩ ላይ የነበረውን የአባላት ተሳትፎ"
+          nzBordered
+          *ngIf="data.members.status"
+        >
+          <nz-descriptions-item nzTitle="የተገኙት አባላት ብዛት"
+            >{{
+              lengthCalculator(data.members.present.male) +
+                lengthCalculator(data.members.present.female)
+            }}
+            ተማሪ</nz-descriptions-item
+          >
+          <nz-descriptions-item nzTitle="የሴቶች ብዛት"
+            ><i nz-icon nzType="check" nzTheme="outline"></i>
+            {{ lengthCalculator(data.members.present.female) }}
+            ተማሪ</nz-descriptions-item
+          >
+          <nz-descriptions-item nzTitle="የወንዶች ብዛት"
+            ><i nz-icon nzType="check" nzTheme="outline"></i>
+            {{ lengthCalculator(data.members.present.male) }}
+            ተማሪ</nz-descriptions-item
+          >
+          <nz-divider></nz-divider>
+          <nz-descriptions-item nzTitle="የቀሩ አባላት ብዛት"
+            >{{
+              lengthCalculator(data.members.absent.male) +
+                lengthCalculator(data.members.absent.female)
+            }}
+            ተማሪ</nz-descriptions-item
+          >
+          <nz-descriptions-item nzTitle="የሴቶች ብዛት"
+            ><i nz-icon nzType="close" nzTheme="outline"></i>
+            {{ lengthCalculator(data.members.absent.female) }}
+            ተማሪ</nz-descriptions-item
+          >
+          <nz-descriptions-item nzTitle="የወንዶች ብዛት"
+            ><i nz-icon nzType="close" nzTheme="outline"></i>
+            {{ lengthCalculator(data.members.absent.male) }}
+            ተማሪ</nz-descriptions-item
+          >
+          <nz-descriptions-item nzTitle="ፈቃድ ያስፈቀዱ አባላት ብዛት">
+            {{
+              lengthCalculator(data.members.permission.male) +
+                lengthCalculator(data.members.permission.female)
+            }}
+            ተማሪ
+          </nz-descriptions-item>
+          <nz-descriptions-item nzTitle="የመደበኛ አባላት ብዛት" [nzSpan]="3">
+            {{
+              lengthCalculator(data.members.permission.male) +
+                lengthCalculator(data.members.permission.female) +
+                lengthCalculator(data.members.absent.male) +
+                lengthCalculator(data.members.absent.female) +
+                lengthCalculator(data.members.present.male) +
+                lengthCalculator(data.members.present.female)
+            }}
+            ተማሪ
+          </nz-descriptions-item>
+          <nz-descriptions-item nzTitle="" [nzSpan]="3">
+            <button
+              nz-button
+              type="button"
+              nzType="primary"
+              (click)="enableEditing(id)"
+            >
+              <i nz-icon nzType="edit" nzTheme="outline"></i> ማስተካከያ
+            </button>
+          </nz-descriptions-item>
+        </nz-descriptions>
+      </tr>
+    </ng-container>
+  </tbody>
+</nz-table>

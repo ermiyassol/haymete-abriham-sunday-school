@@ -1,0 +1,11 @@
+h2 {
+  text-align: center;
+}
+
+.user-icon {
+  font-size: 20px;
+}
+
+th {
+  cursor: pointer;
+}

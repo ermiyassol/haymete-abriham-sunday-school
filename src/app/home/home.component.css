@@ -1,0 +1,65 @@
+nz-header,
+nz-footer {
+  background: #001529;
+  color: #fff;
+}
+
+::ng-deep .vertical-center-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+::ng-deep .vertical-center-modal .ant-modal {
+  top: 0;
+}
+
+.login-form {
+  max-width: 100%;
+}
+
+.login-form-margin {
+  margin-bottom: 16px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+/* .gotoLib {
+  margin-left: 40%;
+  margin-top: 20%;
+} */
+
+.logo {
+  font-size: 25px;
+  color: whitesmoke;
+  font-weight: bold;
+  text-align: center;
+}
+
+nz-button-group {
+  margin-top: 20px;
+}
+
+@media (max-width: 700px) {
+  .logo, .logo1 {
+    font-size: 20px;
+  }
+}
+
+nz-alert {
+  margin-bottom: 10px;
+}
+
+.loading {
+  font-size: 100px;
+  font-weight: bolder;
+  color: red;
+  text-align: center;
+  width: 100%;
+}

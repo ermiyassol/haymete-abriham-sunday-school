@@ -1,0 +1,19 @@
+nz-form-item button {
+  width: 100%;
+}
+
+.redBg {
+  background-color: rgb(63, 0, 0);
+  color: white
+}
+
+.userMargin {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.searchMargin {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}

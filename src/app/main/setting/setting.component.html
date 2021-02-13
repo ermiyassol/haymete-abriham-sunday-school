@@ -1,0 +1,22 @@
+<nz-divider nzText="ፓስወርድ መቀየሪያ ፎርም"></nz-divider>
+<form nz-form [formGroup]="form" class="login-form" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-control nzErrorTip="ብዛቱ ከ 6 ያላነሰ አዲስ ፓሥዎርድ ያስገቡ!">
+      <nz-input-group nzPrefixIcon="lock">
+        <input
+          type="password"
+          nz-input
+          formControlName="password"
+          placeholder="አዲስ ፓስወርድ"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <button
+    nz-button
+    class="login-form-button login-form-margin"
+    [nzType]="'primary'"
+  >
+    ቀይር
+  </button>
+</form>

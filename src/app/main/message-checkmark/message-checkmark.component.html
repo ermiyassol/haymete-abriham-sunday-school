@@ -1,0 +1,126 @@
+<nz-divider nzText="በመርሀግብሮች ላይ የሚተላለፉ መልዕክቶች መቆጣጠሪያ"></nz-divider>
+<form
+  nz-form
+  nz-row
+  nzJustify="space-between"
+  [formGroup]="form"
+  class="login-form"
+  (ngSubmit)="onSubmit()"
+  *ngIf="addingMode || editMode"
+>
+  <!--  -->
+
+  <nz-form-item nz-col nzSpan="24" [nzMd]="{ span: 18 }" formArrayName="text">
+    <label>በመርሀግብሩ ላይ የተላለፉ መልዕክቶች ዝርዝር ዝርዝር</label>
+    <nz-form-control
+      nzErrorTip="ዝርዝር መረጃ ያስገቡ!!"
+      *ngFor="let message of form.get('text')['controls']; let id = index"
+    >
+      <input
+        class="passenger-input"
+        [formControlName]="id"
+        nz-input
+        placeholder="ዝርዝር ይጻፉ!!"
+      />
+      <i
+        nz-icon
+        nzType="delete"
+        nzTheme="outline"
+        class="dynamic-delete-button"
+        (click)="onDeleteContent(id)"
+      ></i>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item nz-col nzSpan="24" [nzMd]="{ span: 18 }">
+    <nz-form-control title="ዝርዝር ርዕሶችን ለማስገባት ይህን ይጫኑ">
+      <button
+        nz-button
+        type="button"
+        nzType="dashed"
+        class="add-button"
+        (click)="addContent()"
+      >
+        <i nz-icon nzType="plus"></i>
+        ዝርዝር መረጃ ማስገቢያ
+      </button>
+    </nz-form-control>
+  </nz-form-item>
+  <!--  -->
+
+  <button
+    nz-button
+    class="search-button"
+    nzType="primary"
+    nz-col
+    nzSpan="24"
+    [nzMd]="{ span: 16 }"
+  >
+    <i nz-icon nzType="send" nzTheme="outline"></i>
+    መረጃውን ላክ
+  </button>
+</form>
+<nz-divider nzText="በቅርቡ የሚደረጉ እና የተደረጉ መርሀግብሮች ዝርዝር"></nz-divider>
+<nz-table #nzTable [nzData]="listOfData" nzTableLayout="fixed">
+  <thead>
+    <tr>
+      <th nzWidth="60px"></th>
+      <th>የመርሀግብሩ ቀን</th>
+      <th>የመርሀግብሩ አይነት</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let data of nzTable.data">
+      <tr>
+        <td
+          [nzExpand]="expandSet.has(data.id)"
+          (nzExpandChange)="onExpandChange(data.id, $event)"
+        ></td>
+        <td>
+          {{ data.day }} - {{ data.month }} - {{ data.date }} - {{ data.year }}
+        </td>
+        <td>{{ data.description }}</td>
+      </tr>
+      <tr [nzExpand]="expandSet.has(data.id)">
+        <nz-empty
+          [nzNotFoundContent]="contentTpl"
+          *ngIf="!data.message.sender"
+        ></nz-empty>
+        <ng-template #contentTpl>
+          <h4>መረጃ አልገባም!!</h4>
+          <button
+            nz-button
+            type="button"
+            nzType="primary"
+            (click)="enableAdding(data.id)"
+          >
+            <i nz-icon nzType="file-add" nzTheme="outline"></i> መረጃ ማስገቢያ
+          </button>
+        </ng-template>
+        <nz-descriptions
+          nzTitle="በመርሀግብሩ ላይ የተላለፉ መልዕክቶች"
+          nzBordered
+          nzSize="small"
+          *ngIf="data.message.sender"
+        >
+          <nz-descriptions-item [nzTitle]="data.message.sender" [nzSpan]="3">
+            <ul>
+              <li *ngFor="let text of data.message.text">
+                {{ text }}
+              </li>
+            </ul>
+          </nz-descriptions-item>
+          <nz-descriptions-item nzTitle="" [nzSpan]="3">
+            <button
+              nz-button
+              type="button"
+              nzType="primary"
+              (click)="enableEditing(data.id)"
+            >
+              <i nz-icon nzType="edit" nzTheme="outline"></i> ማስተካከያ
+            </button>
+          </nz-descriptions-item>
+        </nz-descriptions>
+      </tr>
+    </ng-container>
+  </tbody>
+</nz-table>

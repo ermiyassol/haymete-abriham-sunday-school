@@ -1,0 +1,205 @@
+<nz-divider nzText="የመዝሙር መቆጣጠሪያ"></nz-divider>
+<form
+  nz-form
+  nz-row
+  nzJustify="space-between"
+  [formGroup]="form"
+  class="login-form"
+  (ngSubmit)="onSubmit()"
+  *ngIf="addingMode || editMode"
+>
+  <nz-form-item nz-col nzSpan="24" [nzMd]="{ span: 7 }">
+    <nz-form-control nzErrorTip="ለጥያቂው መልስ ይምረጡ!!">
+      <label for="status">የህብረት ጸሎት / መዝሙር / ወረብ ጥናት ነበር ?</label>
+      <nz-select formControlName="status" id="status">
+        <nz-option [nzValue]="false" nzLabel="አልነበረም"></nz-option>
+        <nz-option [nzValue]="true" nzLabel="አዎ ነበር"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item
+    nz-col
+    nzSpan="24"
+    [nzMd]="{ span: 8 }"
+    *ngIf="form.value.status"
+  >
+    <nz-form-control nzErrorTip="በዕለቱ የነበረውን መርሀግብር ይምረጡ!!">
+      <label for="type">የዕለቱ የመዝሙር ክፍል መርሀግብር</label>
+      <nz-select formControlName="type" id="type">
+        <nz-option nzValue="መዝሙር ጥናት" nzLabel="መዝሙር ጥናት"></nz-option>
+        <nz-option nzValue="ወረብ ጥናት" nzLabel="ወረብ ጥናት"></nz-option>
+        <nz-option nzValue="የህብረት ጸሎት" nzLabel="ጸሎት"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item
+    nz-col
+    nzSpan="24"
+    [nzMd]="{ span: 8 }"
+    *ngIf="form.value.status"
+  >
+    <nz-form-control nzErrorTip="የአባሉን ስም ያስገባ!!">
+      <label for="leaderName">የመዝሙሩን መርሀግብር የመራው አባል ስም </label>
+      <nz-input-group>
+        <input
+          type="text"
+          nz-input
+          id="leaderName"
+          formControlName="leaderName"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!--  -->
+  <nz-form-item
+    nz-col
+    nzSpan="24"
+    [nzMd]="{ span: 18 }"
+    formArrayName="content"
+    *ngIf="form.value.status"
+  >
+    <label>የተጠኑ መዝሙራት፣ ወረብ እና ጸሎቶች ዝርዝር </label>
+    <nz-form-control
+      nzErrorTip="ዝርዝር መረጃ ያስገቡ!!"
+      *ngFor="let ingredient of form.get('content')['controls']; let id = index"
+    >
+      <input
+        class="passenger-input"
+        [formControlName]="id"
+        nz-input
+        placeholder="ዝርዝር ይጻፉ!!"
+      />
+      <i
+        nz-icon
+        nzType="delete"
+        nzTheme="outline"
+        class="dynamic-delete-button"
+        (click)="onDeleteContent(id)"
+      ></i>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item
+    nz-col
+    nzSpan="24"
+    [nzMd]="{ span: 18 }"
+    *ngIf="form.value.status"
+  >
+    <nz-form-control title="አዲስ የተጠኑ መዝሙራትን፣ ወረቦችን እና ጸሎቶችን ርዕስ ለማስገባት ይህን ይጫኑ">
+      <button
+        nz-button
+        type="button"
+        nzType="dashed"
+        class="add-button"
+        (click)="addContent()"
+      >
+        <i nz-icon nzType="plus"></i>
+        ዝርዝር መረጃ ማስገቢያ
+      </button>
+    </nz-form-control>
+  </nz-form-item>
+  <!--  -->
+
+  <button
+    nz-button
+    class="search-button"
+    nzType="primary"
+    nz-col
+    nzSpan="24"
+    [nzMd]="{ span: 16 }"
+  >
+    <i nz-icon nzType="send" nzTheme="outline"></i>
+    መረጃውን ላክ
+  </button>
+</form>
+<nz-divider nzText="በቅርቡ የሚደረጉ እና የተደረጉ መርሀግብሮች ዝርዝር"></nz-divider>
+<nz-table #nzTable [nzData]="listOfData" nzTableLayout="fixed">
+  <thead>
+    <tr>
+      <th nzWidth="60px"></th>
+      <th>የመርሀግብሩ ቀን</th>
+      <th>የመርሀግብሩ አይነት</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let data of nzTable.data">
+      <tr>
+        <td
+          [nzExpand]="expandSet.has(data.id)"
+          (nzExpandChange)="onExpandChange(data.id, $event)"
+        ></td>
+        <td>
+          {{ data.day }} - {{ data.month }} - {{ data.date }} - {{ data.year }}
+        </td>
+        <td>{{ data.description }}</td>
+      </tr>
+      <tr [nzExpand]="expandSet.has(data.id)">
+        <nz-empty
+          [nzNotFoundContent]="contentTpl"
+          *ngIf="lengthCalculator(data.song) === 0"
+        ></nz-empty>
+        <ng-template #contentTpl>
+          <h4>መረጃ አልገባም!!</h4>
+          <button
+            nz-button
+            type="button"
+            nzType="primary"
+            (click)="enableAdding(data.id)"
+          >
+            <i nz-icon nzType="file-add" nzTheme="outline"></i> መረጃ ማስገቢያ
+          </button>
+        </ng-template>
+        <nz-empty
+          [nzNotFoundContent]="contentTp3"
+          *ngIf="!data.song.song && data.song.status === false"
+        ></nz-empty>
+        <ng-template #contentTp3>
+          <h4>መዝሙር ጥናት አልነበረም!!</h4>
+          <button
+            nz-button
+            type="button"
+            nzType="primary"
+            (click)="enableEditing(data.id)"
+          >
+            <i nz-icon nzType="edit" nzTheme="outline"></i> ማስተካከያ
+          </button>
+        </ng-template>
+        <nz-descriptions
+          nzTitle="በመርሀግብሩ ላይ ስለነበረው መዝሙር / ጸሎት መረጃ"
+          nzBordered
+          nzSize="small"
+          *ngIf="data.song.type"
+        >
+          <nz-descriptions-item nzTitle="የመርሀ ግብሩ አይነት">{{
+            data.song.type
+          }}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="የአስኚው / የመሪው ስም" [nzSpan]="3">{{
+            data.song.leaderName
+          }}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="አዲስ የተጠኑ መዝሙራት ርዕስ" [nzSpan]="3">
+            <ul *ngIf="data.song.content">
+              <li *ngFor="let title of data.song.content">
+                {{ title }}
+              </li>
+            </ul>
+            <p *ngIf="!data.song.content">
+              አዲስ መዝሙር አልተጠናም፣ ሌሎች ልዩ ተግባራትም አልነበሩም!!
+            </p>
+          </nz-descriptions-item>
+          <nz-descriptions-item nzTitle="" [nzSpan]="3">
+            <button
+              nz-button
+              type="button"
+              nzType="primary"
+              (click)="enableEditing(data.id)"
+            >
+              <i nz-icon nzType="edit" nzTheme="outline"></i> ማስተካከያ
+            </button>
+          </nz-descriptions-item>
+        </nz-descriptions>
+      </tr>
+    </ng-container>
+  </tbody>
+</nz-table>

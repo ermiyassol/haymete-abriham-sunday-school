@@ -1,0 +1,28 @@
+nz-alert,
+h1 {
+  text-align: center;
+}
+
+nz-alert {
+  font-size: 35px;
+  margin-bottom: 15px;
+}
+
+form,
+.erase-button,
+nz-date-picker {
+  width: 100%;
+}
+
+nz-form-item,
+.button {
+  padding-right: 20px;
+}
+
+.gender {
+  margin: 0 15px 10px 0;
+}
+
+.erase-button {
+  margin-top: 10px;
+}

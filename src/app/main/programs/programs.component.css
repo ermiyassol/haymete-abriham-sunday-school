@@ -1,0 +1,19 @@
+h2 {
+  text-align: center;
+}
+
+.last-td {
+  text-align: right;
+}
+
+.search-button {
+  margin-top: 20px;
+}
+
+.display-off {
+  display: none;
+}
+
+.error {
+  color: red;
+}

@@ -1,0 +1,194 @@
+<nz-layout class="layout">
+  <nz-sider nzCollapsible nzBreakpoint="lg" [nzCollapsedWidth]="0">
+    <div class="logo"></div>
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li
+        nz-menu-item
+        routerLink="አጠቃላይ_መረጃ"
+        routerLinkActive="ant-menu-item-selected"
+        *ngIf="
+          User.role == 'ትምህርት ክፍል' ||
+          User.role == 'መዝሙር ክፍል' ||
+          User.role == 'መረጃ ማየት' ||
+          User.role == 'ጽ/ቤት' ||
+          User.role == 'አባላት ጉዳይ'
+        "
+      >
+        <i nz-icon nzType="dashboard" nzTheme="outline"></i>
+        <span>መረጃ</span>
+      </li>
+      <li
+        nz-menu-item
+        routerLink="መርሀግብር"
+        routerLinkActive="ant-menu-item-selected"
+        *ngIf="
+          User.role == 'ትምህርት ክፍል' ||
+          User.role == 'መዝሙር ክፍል' ||
+          User.role == 'መረጃ እና መዛግብት' ||
+          User.role == 'ጽ/ቤት' ||
+          User.role == 'መረጃ ማየት' ||
+          User.role == 'አባላት ጉዳይ'
+        "
+      >
+        <i nz-icon nzType="appstore-add"></i>
+        <span>መርሀግብር</span>
+      </li>
+      <li
+        nz-submenu
+        nzTitle="ቁጥጥር"
+        nzIcon="check-circle"
+        *ngIf="
+          User.role == 'አባላት ቁጥጥር' ||
+          User.role == 'ትምህርት ቁጥጥር' ||
+          User.role == 'መዝሙር ቁጥጥር' ||
+          User.role == 'መልዕክት ቁጥጥር'
+        "
+      >
+        <ul>
+          <li
+            nz-menu-item
+            routerLink="አባላት/ቀሪ_መቆጣጠሪያ"
+            routerLinkActive="ant-menu-item-selected"
+            *ngIf="User.role == 'አባላት ቁጥጥር'"
+          >
+            <i nz-icon nzType="schedule" nzTheme="outline"></i>
+            ቀሪ መቆጣጠሪያ
+          </li>
+          <li
+            nz-menu-item
+            routerLink="ትምህርት/መምህር_መቆጣጠሪያ"
+            routerLinkActive="ant-menu-item-selected"
+            *ngIf="User.role == 'ትምህርት ቁጥጥር'"
+          >
+            <i nz-icon nzType="carry-out" nzTheme="outline"></i>
+            መምህር መቆጣጠሪያ
+          </li>
+          <li
+            nz-menu-item
+            routerLink="መዝሙር/መዝሙር_መቆጣጠሪያ"
+            routerLinkActive="ant-menu-item-selected"
+            *ngIf="User.role == 'መዝሙር ቁጥጥር'"
+          >
+            <i nz-icon nzType="book" nzTheme="outline"></i>
+            መዝሙር መቆጣጠሪያ
+          </li>
+          <li
+            nz-menu-item
+            routerLink="ጉባኤ/መልዕክት_መቆጣጠሪያ"
+            routerLinkActive="ant-menu-item-selected"
+            *ngIf="User.role == 'መልዕክት ቁጥጥር'"
+          >
+            <i nz-icon nzType="book" nzTheme="outline"></i>
+            መልዕክት መቆጣጠሪያ
+          </li>
+        </ul>
+      </li>
+      <li
+        nz-submenu
+        nzTitle="አባላት"
+        nzIcon="team"
+        *ngIf="
+          User.role == 'ትምህርት ክፍል' ||
+          User.role == 'መዝሙር ክፍል' ||
+          User.role == 'አባላት ጉዳይ' ||
+          User.role == 'አባላት ቁጥጥር' ||
+          User.role == 'መረጃ እና መዛግብት' ||
+          User.role == 'ጽ/ቤት'
+        "
+      >
+        <ul>
+          <li
+            nz-menu-item
+            routerLink="የአባላት_ዝርዝር"
+            routerLinkActive="ant-menu-item-selected"
+            *ngIf="
+              User.role == 'ትምህርት ክፍል' ||
+              User.role == 'መዝሙር ክፍል' ||
+              User.role == 'አባላት ጉዳይ' ||
+              User.role == 'አባላት ቁጥጥር' ||
+              User.role == 'መረጃ እና መዛግብት' ||
+              User.role == 'ጽ/ቤት'
+            "
+          >
+            <i nz-icon nzType="unordered-list" nzTheme="outline"></i> የአባላት ዝርዝር
+          </li>
+          <li
+            nz-menu-item
+            routerLink="አዲስ_አባል_መመዝገቢያ"
+            routerLinkActive="ant-menu-item-selected"
+            *ngIf="User.role == 'መረጃ እና መዛግብት'"
+          >
+            <i nz-icon nzType="audit" nzTheme="outline"></i> አዲስ አባል መመዝገቢያ
+          </li>
+          <li
+            nz-menu-item
+            routerLink="አባላት/ተሳትፎ"
+            routerLinkActive="ant-menu-item-selected"
+            *ngIf="
+              User.role == 'ትምህርት ክፍል' ||
+              User.role == 'መዝሙር ክፍል' ||
+              User.role == 'አባላት ጉዳይ' ||
+              User.role == 'አባላት ቁጥጥር'
+            "
+          >
+            <i nz-icon nzType="contacts" nzTheme="outline"></i> የአባላት ተሳትፎ
+          </li>
+        </ul>
+      </li>
+      <li
+        nz-menu-item
+        routerLink="ቤተ_መጽሐፍት"
+        routerLinkActive="ant-menu-item-selected"
+        *ngIf="User.role == 'ትምህርት ክፍል' || User.role == 'ቤተ መጽሀፍት'"
+      >
+        <i nz-icon nzType="file"></i>
+        <span>ቤተ መጽሐፍት</span>
+      </li>
+      <li
+        nz-menu-item
+        routerLink="ክፍላት"
+        routerLinkActive="ant-menu-item-selected"
+        *ngIf="
+          User.role == 'ትምህርት ክፍል' ||
+          User.role == 'መዝሙር ክፍል' ||
+          User.role == 'አባላት ጉዳይ' ||
+          User.role == 'ጽ/ቤት'
+        "
+      >
+        <i nz-icon nzType="user-switch" nzTheme="outline"></i>
+        <span>ክፍላት</span>
+      </li>
+      <li
+        nz-menu-item
+        routerLink="መረጃ_ማስተካከያ"
+        routerLinkActive="ant-menu-item-selected"
+      >
+        <i nz-icon nzType="setting" nzTheme="outline"></i>
+        <span>መረጃ ማስተካከያ</span>
+      </li>
+      <li nz-menu-item>
+        <button
+          class="logout"
+          nz-button
+          nzType="primary"
+          (click)="onLogout()"
+          nzGhost
+        >
+          መውጫ <i nz-icon nzType="logout" nzTheme="outline"></i>
+        </button>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header><h2>ሐይመተ አብርሃም ሰንበት ት/ቤት</h2></nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+    <nz-footer
+      ><i nz-icon nzType="home" nzTheme="outline"></i> ሐይመተ አብርሃም ሰንበት ት/ቤት
+      ©2013</nz-footer
+    >
+  </nz-layout>
+</nz-layout>

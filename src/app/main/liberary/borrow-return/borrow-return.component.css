@@ -1,0 +1,21 @@
+.add-button {
+  margin-top: 20px;
+}
+
+.book-name-error {
+  color: red;
+}
+
+.update-button {
+  width: 100%;
+}
+
+.check {
+  font-size: 25px;
+  color: rgb(26, 148, 26);
+  text-align: center;
+}
+
+.delete-button {
+  background-color: red;
+}

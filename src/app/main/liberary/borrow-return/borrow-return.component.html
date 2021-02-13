@@ -1,0 +1,210 @@
+<form
+  nz-form
+  nz-row
+  nzJustify="space-between"
+  [formGroup]="form"
+  class="login-form"
+>
+  <p nz-col nzSpan="24" *ngIf="bookProperty != null">
+    የመጽሐፉ ስም:- {{ bookProperty.name }}
+  </p>
+  <p
+    nz-col
+    nzSpan="24"
+    class="book-name-error"
+    *ngIf="codeErrorMessage == true"
+  >
+    የመጽሐፉ ኮድ ከመጽሐፍት ዝርዝር ውስጥ የለም!! በድጋሚ እስተካክለው ያስገቡ . . .
+  </p>
+  <span nz-col nzSpan="24" *ngIf="searchingBook"
+    ><i nz-icon nzType="loading" nzTheme="outline"></i> የመጽሐፉን ስም በመፈለግ ላይ
+    ነው!!</span
+  >
+  <nz-form-item nz-col nzSpan="18" [nzMd]="{ span: 4 }">
+    <nz-form-control nzErrorTip="የመጽሐፉን ኮድ ያስገቡ!!">
+      <label for="bookCode">የመጽሐፍ ኮድ </label>
+      <nz-input-group>
+        <input type="text" nz-input id="bookCode" formControlName="bookCode" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-col nzSpan="24" [nzMd]="{ span: 12 }">
+    <nz-form-control nzErrorTip="የአባሉን ስም ያስገቡ!!">
+      <label for="borrower">መጽሐፉን የተከራየው አባል ሙሉ ስም </label>
+      <nz-input-group>
+        <input type="text" nz-input id="borrower" formControlName="borrower" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-col nzSpan="24" [nzMd]="{ span: 7 }">
+    <nz-form-control nzErrorTip="የአባሉን ስልክ ቁጥር ያስገቡ!!">
+      <label for="phone">ስልክ ቁጥር </label>
+      <nz-input-group>
+        <input type="text" nz-input id="phone" formControlName="phone" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <button
+    nz-button
+    class="add-button"
+    nzType="primary"
+    type="button"
+    nz-col
+    nzSpan="24"
+    (click)="onSubmit()"
+  >
+    <i nz-icon nzType="plus" nzTheme="outline"></i>
+    መጽሐፉን አከራይ
+  </button>
+</form>
+
+<nz-divider nzDashed [nzText]="text">
+  <ng-template #text>
+    <button nz-button nzType="dashed" (click)="viewLibraryInfo()">
+      መጽሐፍት የተከራዩ አባላትን ዝርዝር መረጃ አሳየኝ
+    </button>
+  </ng-template>
+</nz-divider>
+
+<nz-table
+  #fixedTable
+  [nzData]="listOfData"
+  [nzScroll]="{ x: '1000px', y: '500px' }"
+  *ngIf="listOfData"
+>
+  <thead>
+    <tr>
+      <th>መልሰዋል</th>
+      <th>ሙሉ ስም</th>
+      <th>ኮድ</th>
+      <th>የመጽሐፉ ስም</th>
+      <th>የተከራየበት ቀን</th>
+      <th>እድሳት የተደረገባቸው ቀናት</th>
+      <th>መጽሐፉን ያከራየው አባል</th>
+      <th>ማስተካከያ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let data of listOfData; let i = index"
+      [nzTooltipTitle]="data.phone"
+      nzTooltipPlacement="top"
+      nz-tooltip
+    >
+      <td><label nz-checkbox [(ngModel)]="data.status"></label></td>
+      <td>{{ data.userName }}</td>
+      <td>{{ data.bookCode }}</td>
+      <td>{{ data.bookName }}</td>
+      <td>{{ data.date }}</td>
+      <td>
+        <nz-list nzBordered nzSize="small">
+          <nz-list-item *ngFor="let date of data.update">{{
+            date
+          }}</nz-list-item>
+        </nz-list>
+      </td>
+      <td>{{ data.LName1 }}</td>
+      <td>
+        <button
+          class="update-button"
+          nz-popconfirm
+          nzPopconfirmTitle="የመጽሐፍት ውሰቱን ቀን ማደስ ይፈልጋሉ?"
+          (nzOnConfirm)="updateInfo(i)"
+          nzPopconfirmPlacement="leftTop"
+          nz-button
+          type="button"
+          nzType="primary"
+        >
+          ማደሻ
+        </button>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="7" nzLeft>
+        <button
+          nz-popconfirm
+          nzPopconfirmTitle="የመጽሐፍት የመለሱትን አባላት ላረጋግጥሎ?"
+          (nzOnConfirm)="submitReturned()"
+          nzPopconfirmPlacement="rightTop"
+          nz-button
+          nzType="primary"
+          type="button"
+        >
+          <i nz-icon nzType="check" nzTheme="outline"></i>
+          መጽሐፉን የመለሱትን መረጃ ላክ
+        </button>
+      </td>
+    </tr>
+  </tfoot>
+</nz-table>
+<br />
+<nz-divider nzDashed [nzText]="text1" *ngIf="User.role == 'ትምህርት ክፍል'">
+  <ng-template #text1>
+    <button nz-button nzType="dashed" type="button" (click)="viewAllInfo()">
+      በላይብረሪ የተደረጉ የመጽሀፍትን ውሰት አሳየኝ
+    </button>
+  </ng-template>
+</nz-divider>
+
+<nz-table
+  #fixedTable
+  [nzData]="listOfData1"
+  [nzScroll]="{ x: '1240px', y: '1000px' }"
+  *ngIf="listOfData1 && User.role == 'ትምህርት ክፍል'"
+>
+  <thead>
+    <tr>
+      <th>መልሰዋል</th>
+      <th>ሙሉ ስም</th>
+      <th>ኮድ</th>
+      <th>የመጽሐፉ ስም</th>
+      <th>መጽሐፉ አባሉ ጋር የቆየበት</th>
+      <th>እድሳት የተደረገባቸው ቀናት</th>
+      <th>መጽሐፉን ያከራየው አባል</th>
+      <th>መጽሐፉን ያስመለሰው አባል</th>
+      <th>ማጥፊያ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let data of listOfData1; let i = index"
+      [nzTooltipTitle]="data.phone"
+      nzTooltipPlacement="top"
+      nz-tooltip
+    >
+      <td><i nz-icon class="check" nzType="check" nzTheme="outline"></i></td>
+      <td>{{ data.userName }}</td>
+      <td>{{ data.bookCode }}</td>
+      <td>{{ data.bookName }}</td>
+      <td>{{ data.date }}</td>
+      <td>
+        <nz-list nzBordered nzSize="small">
+          <nz-list-item *ngFor="let date of data.update">{{
+            date
+          }}</nz-list-item>
+        </nz-list>
+      </td>
+      <td>{{ data.LName1 }}</td>
+      <td>{{ data.LName2 }}</td>
+      <td>
+        <button
+          class="delete-button"
+          nz-popconfirm
+          nzPopconfirmTitle="የመጽሐፍት ውሰቱን ቀን ማደስ ይፈልጋሉ?"
+          (nzOnConfirm)="deleteInfo(i)"
+          nzPopconfirmPlacement="leftTop"
+          nz-button
+          type="button"
+          nzType="dashed"
+        >
+          <i nz-icon nzType="delete" nzTheme="outline"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

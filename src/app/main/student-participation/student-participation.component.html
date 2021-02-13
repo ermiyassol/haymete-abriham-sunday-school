@@ -1,0 +1,181 @@
+<nz-divider nzText="የአባላትን በሰንበት ት/ቤት ውስጥ ያላቸውን ተሳትፎ መረጃ ማውጫ"></nz-divider>
+<nz-alert nzType="error" [nzMessage]="error" *ngIf="error"></nz-alert>
+<form
+  nz-form
+  nz-row
+  nzJustify="space-between"
+  [formGroup]="form"
+  class="login-form"
+  (ngSubmit)="queryData()"
+>
+  <nz-form-item nz-col nzSpan="24" [nzMd]="{ span: 8 }">
+    <nz-form-control nzErrorTip="ቀን ይምረጡ!!">
+      <label for="param">መፈለጊያ መንገዶች</label>
+      <nz-select formControlName="param" id="param">
+        <nz-option nzValue="" nzLabel="የመረጃውን ይዘት ይምረጡ . . ."></nz-option>
+        <nz-option nzValue="day" nzLabel="በዕለት"></nz-option>
+        <nz-option nzValue="date" nzLabel="በቀን"></nz-option>
+        <nz-option nzValue="month" nzLabel="በወር"></nz-option>
+        <nz-option nzValue="year" nzLabel="በአመት"></nz-option>
+        <nz-option nzValue="description" nzLabel="በመርሀግብር አይነት"></nz-option>
+        <nz-option nzValue="specific_date" nzLabel="በቀን፣ በወር፣ በአመት"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item
+    nz-col
+    nzSpan="24"
+    [nzMd]="{ span: 8 }"
+    *ngIf="form.value.param == 'day'"
+  >
+    <nz-form-control nzErrorTip="ቀን ይምረጡ!!">
+      <label for="days">የመርሀግብር ቀን</label>
+      <nz-select formControlName="day" id="days">
+        <nz-option
+          *ngFor="let day of days"
+          [nzValue]="day"
+          [nzLabel]="day"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item
+    nz-col
+    nzSpan="24"
+    [nzMd]="{ span: 8 }"
+    *ngIf="form.value.param == 'description'"
+  >
+    <nz-form-control nzErrorTip="አንድ መርሀግብሩን ሊገልጽ የሚችል ነገር ያስገቡ!!">
+      <label for="desc">የመርሀግብሩ አይነት / ስም </label>
+      <nz-input-group>
+        <input
+          type="text"
+          nz-input
+          id="desc"
+          formControlName="description"
+          [nzAutocomplete]="auto"
+        />
+        <nz-autocomplete
+          [nzDataSource]="options"
+          nzBackfill
+          #auto
+        ></nz-autocomplete>
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item
+    nz-col
+    nzSpan="4"
+    [nzMd]="{ span: 2 }"
+    *ngIf="form.value.param == 'specific_date' || form.value.param == 'date'"
+  >
+    <nz-form-control nzErrorTip="ቀን ይምረጡ!!">
+      <label for="dates">ቀን</label>
+      <nz-select class="date" formControlName="date" id="dates">
+        <nz-option
+          *ngFor="let date of dates"
+          [nzValue]="date"
+          [nzLabel]="date"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item
+    nz-col
+    nzSpan="10"
+    [nzMd]="{ span: 4 }"
+    *ngIf="form.value.param == 'specific_date' || form.value.param == 'month'"
+  >
+    <nz-form-control nzErrorTip="ወር ይምረጡ!!">
+      <label for="months">ወር</label>
+      <nz-select formControlName="month" id="months">
+        <nz-option
+          *ngFor="let month of months"
+          [nzValue]="month"
+          [nzLabel]="month"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item
+    nz-col
+    nzSpan="6"
+    [nzMd]="{ span: 2 }"
+    *ngIf="form.value.param == 'specific_date' || form.value.param == 'year'"
+  >
+    <nz-form-control nzErrorTip="አመተ ምህረት ይምረጡ!!">
+      <label for="years">አመተ ምህረት</label>
+      <nz-select formControlName="year" id="years">
+        <nz-option
+          *ngFor="let year of years"
+          [nzValue]="year"
+          [nzLabel]="year"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-col nzSpan="18" [nzMd]="{ span: 6 }">
+    <nz-form-control nzErrorTip="የስንት መርሀግብር መረጃ ማየት እንደፈልጉ ያስገቡ!!">
+      <label for="amount">የመርሀግብር ብዛት </label>
+      <nz-input-group>
+        <input type="number" nz-input id="amount" formControlName="amount" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <button nz-button class="search-button" nzType="primary" nz-col nzSpan="24">
+    <i nz-icon nzType="file-search" nzTheme="outline"></i>
+    መረጃ አሳየኝ
+  </button>
+</form>
+
+<nz-divider
+  *ngIf="Data.length"
+  nzDashed
+  nzText="የአባላት ተሳትፎ ዝርዝር መረጃ"
+></nz-divider>
+
+<nz-radio-group [(ngModel)]="status" nzButtonStyle="solid" *ngIf="Data.length">
+  <label nz-radio-button nzValue="">ሁሉንም አባል</label>
+  <label nz-radio-button nzValue="ወጣት 1">ወጣት 1(ቀዳማይ)</label>
+  <label nz-radio-button nzValue="ወጣት 2">ወጣት 2(ካዕላይ)</label>
+</nz-radio-group>
+
+<nz-table
+  *ngIf="Data.length"
+  #fixedTable
+  [nzData]="Data"
+  [nzScroll]="{ x: '700px', y: '500px' }"
+>
+  <thead>
+    <tr>
+      <th nzLeft nzWidth="100px">መ. ቁ.</th>
+      <th nzLeft nzWidth="150px">ሙሉ ስም</th>
+      <th
+        *ngFor="let h of Head"
+        [nzTooltipTitle]="h.more"
+        nzTooltipPlacement="top"
+        nz-tooltip
+      >
+        {{ h.date }}
+      </th>
+      <th nzRight nzWidth="120px">አጠቃላይ የመጡበት</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of Data | attendanceFilter: status">
+      <td nzLeft nzWidth="100px">{{ data.id }}</td>
+      <td nzLeft nzWidth="150px">{{ data.name }}</td>
+      <td *ngFor="let class of data.info">
+        <i nz-icon [nzType]="class" nzTheme="outline"></i>
+      </td>
+      <td nzRight nzWidth="120px">{{ data.total }} ቀን</td>
+    </tr>
+  </tbody>
+</nz-table>

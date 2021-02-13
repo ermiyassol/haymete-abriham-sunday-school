@@ -1,0 +1,35 @@
+nz-list-header button:nth-child(n+2) {
+  margin-left: 20px;
+}
+
+span {
+  float: left;
+  margin-left: 0;
+}
+
+nz-radio-group {
+  margin-left: 20px;
+}
+
+nz-list-footer button:nth-child(1) {
+  width: 70%;
+}
+
+.danger {
+  background-color: red;
+  color: white;
+  width: 20%;
+  margin-left: 5%;
+}
+
+.present {
+  color: rgb(15, 156, 15);
+}
+
+.absent {
+  color: red;
+}
+
+.permission{
+  color: rgb(47, 99, 209)
+}

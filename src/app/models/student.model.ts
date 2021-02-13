@@ -1,0 +1,31 @@
+export class Student {
+  constructor(
+    public birthDate: string,
+    public birthPlace: string,
+    // public blockNumber: string,
+    // public city: string,
+    // public country: string,
+    public educationLevel: string,
+    // public email: string,
+    public firstName: string,
+    public gender: string,
+    public hollyChurch: string,
+    public hollyEducationLevel: string,
+    public hollyName: string,
+    public hollyResponsibility: string,
+    public hollylevel: string,
+    // public homeNumber: string,
+    public id: string,
+    public jobType: string,
+    public joinigDate: string,
+    public lastName: string,
+    public middleName: string,
+    public phoneNumber: number,
+    // public place: string,
+    // public postalNumber: string,
+    public studentType: string,
+    // public subcity: string,
+    public villageName: string,
+    public key?: string
+  ) {}
+}

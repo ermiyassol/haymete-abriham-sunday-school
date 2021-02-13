@@ -1,0 +1,459 @@
+<div class="main-container" nz-row>
+  <h1 nz-col nzSpan="24">
+    {{ new ? "አዲስ የሰንበት ት/ቤት አባል መመዝገቢያ ፎርም" : "የሰንበት ት/ቤት አባል መረጃ" }}
+  </h1>
+  <nz-alert nzType="info" nzMessage="ግላዊ መረጃ" nz-col nzSpan="24"></nz-alert>
+  <!-- form starts -->
+  <form
+    nz-form
+    nz-row
+    nzJustify="space-between"
+    [formGroup]="forms"
+    class="login-form"
+    (ngSubmit)="submitForm()"
+  >
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 24 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="id">ፋይል ቁጥር</label>
+        <nz-input-group nzAddOnBefore="ሐአ/አ/">
+          <input
+            type="text"
+            nz-input
+            id="id"
+            formControlName="id"
+            maxlength="4"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- <hr nz-col nzSpan="24" /> -->
+    <nz-divider nzText="የአባሉን መረጃ ይሙሉ!!"></nz-divider>
+
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 8 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="firstName">ስም</label>
+        <nz-input-group>
+          <input
+            type="text"
+            nz-input
+            id="firstName"
+            formControlName="firstName"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 8 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="middleName">የአባት ስም</label>
+        <nz-input-group>
+          <input
+            type="text"
+            nz-input
+            id="middleName"
+            formControlName="middleName"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 8 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="lastName">የአያት ስም</label>
+        <nz-input-group>
+          <input
+            type="text"
+            nz-input
+            id="lastName"
+            formControlName="lastName"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 12 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="hollyName">ክርስትና ስም</label>
+        <nz-input-group>
+          <input
+            type="text"
+            nz-input
+            id="hollyName"
+            formControlName="hollyName"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 12 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="hollyChurch">ክርስትና የተነሳበት/ችበት ቤ/ክ ስም</label>
+        <nz-input-group>
+          <input
+            type="text"
+            nz-input
+            id="hollyChurch"
+            formControlName="hollyChurch"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- አንድ ጾታ ለደቴል ይቀራል -->
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 6 }">
+      <nz-form-control nzErrorTip="Please Choose Sex!">
+        <label for="gender" class="gender">ጾታ</label>
+        <p *ngIf="!new || !editMode">{{ genValue }}</p>
+        <div class="form-check" *ngIf="new || editMode">
+          <input
+            class="form-check-input"
+            type="radio"
+            formControlName="gender"
+            id="male"
+            value="ወንድ"
+            required
+          />
+          <label class="form-check-label" for="male"> ወንድ </label>
+        </div>
+
+        <div class="form-check" *ngIf="new || editMode">
+          <input
+            class="form-check-input"
+            type="radio"
+            formControlName="gender"
+            id="female"
+            value="ሴት"
+            required
+          />
+          <label class="form-check-label" for="female"> ሴት </label>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+    <!--  -->
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 9 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="birthDate">የትውልድ ግዜ</label>
+        <nz-date-picker
+          id="birthDate"
+          formControlName="birthDate"
+        ></nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 9 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="birthPlace">የትውልድ ቦታ</label>
+        <nz-input-group>
+          <input
+            type="text"
+            nz-input
+            id="birthPlace"
+            formControlName="birthPlace"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 8 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="hollyResponsibility">ስልጣነ ክህነት</label>
+        <nz-select
+          formControlName="hollyResponsibility"
+          id="hollyResponsibility"
+          placeholder="Username"
+        >
+          <nz-option nzValue="ዲቁና" nzLabel="ዲቁና"></nz-option>
+          <nz-option nzValue="ክህነት" nzLabel="ክህነት"></nz-option>
+          <nz-option nzValue="የለም" nzLabel="የለም"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 8 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="jobType">የስራ አይነት</label>
+        <nz-select formControlName="jobType" id="jobType">
+          <nz-option
+            nzValue="የመንግስት ሰራተኛ"
+            nzLabel="የመንግስት ሰራተኛ"
+            selected
+          ></nz-option>
+          <nz-option nzValue="የግል ሰራተኛ" nzLabel="የግል ሰራተኛ"></nz-option>
+          <nz-option nzValue="የግል ስራ" nzLabel="የግል ስራ" selected></nz-option>
+          <nz-option nzValue="ተማሪ" nzLabel="ተማሪ"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 8 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="educationLevel">የትምህርት ደረጃ</label>
+        <nz-select formControlName="educationLevel" id="educationLevel">
+          <nz-option nzValue="10 - 12" nzLabel="10 - 12" selected></nz-option>
+          <nz-option nzValue="ሰርተፍኬት" nzLabel="ሰርተፍኬት"></nz-option>
+          <nz-option nzValue="ዲፕሎማ" nzLabel="ዲፕሎማ" selected></nz-option>
+          <nz-option nzValue="ዲግሪ" nzLabel="ዲግሪ"></nz-option>
+          <nz-option nzValue="ማስተርስ" nzLabel="ማስተርስ" selected></nz-option>
+          <nz-option nzValue="ሌላ" nzLabel="ሌላ" selected></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-alert
+      nzType="info"
+      nzMessage="የአገልግሎት መረጃ"
+      nz-col
+      nzSpan="24"
+    ></nz-alert>
+
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 8 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="joinigDate">የሰንበት ት/ቤት አባል የሆኑበት ጊዜ</label>
+        <nz-date-picker
+          id="joinigDate"
+          formControlName="joinigDate"
+        ></nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 8 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="hollyEducationLevel">የሰንበት ት/ቤት የትምህርት ደረጃ</label>
+        <nz-select
+          formControlName="hollyEducationLevel"
+          id="hollyEducationLevel"
+        >
+          <nz-option nzValue="ቀዳማይ" nzLabel="ቀዳማይ"></nz-option>
+          <nz-option nzValue="ካዕላይ" nzLabel="ካዕላይ"></nz-option>
+          <nz-option nzValue="ሳልሳይ" nzLabel="ሳልሳይ"></nz-option>
+          <nz-option nzValue="ራዕባይ" nzLabel="ራዕባይ"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 8 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="hollylevel">ምድብ</label>
+        <nz-select formControlName="hollylevel" id="hollylevel">
+          <nz-option
+            nzValue="ወጣት 1"
+            nzLabel="ወጣት 1 (ቀዳማይ)"
+            selected
+          ></nz-option>
+          <nz-option nzValue="ወጣት 2" nzLabel="ወጣት 2 (ካዕላይ)"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 12 }">
+      <nz-form-control nzErrorTip="Please Choose Membership Type!">
+        <label for="studentType" class="gender">የአባልነት አይነት</label>
+        <p *ngIf="!new || !editMode">{{ studTypeValue }}</p>
+        <div class="form-check" *ngIf="new || editMode">
+          <input
+            class="form-check-input"
+            type="radio"
+            formControlName="studentType"
+            id="regular"
+            value="መደበኛ"
+            checked
+            required
+          />
+          <label class="form-check-label" for="regular"> መደበኛ </label>
+        </div>
+
+        <div class="form-check" *ngIf="new || editMode">
+          <input
+            class="form-check-input"
+            type="radio"
+            formControlName="studentType"
+            id="extension"
+            value="የርቀት"
+            required
+          />
+          <label class="form-check-label" for="extension"> የርቀት </label>
+        </div>
+        <div class="form-check" *ngIf="editMode">
+          <input
+            class="form-check-input"
+            type="radio"
+            formControlName="studentType"
+            id="absent"
+            value="የጠፋ"
+            checked
+            required
+          />
+          <label class="form-check-label" for="absent"> የጠፋ </label>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-alert nzType="info" nzMessage="አድራሻ" nz-col nzSpan="24"></nz-alert>
+
+    <!-- <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 12 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="country">ሀገር</label>
+        <nz-input-group>
+          <input type="text" nz-input id="country" formControlName="country" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item> -->
+
+    <!-- <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 12 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="city">ከተማ</label>
+        <nz-input-group>
+          <input type="text" nz-input id="city" formControlName="city" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item> -->
+
+    <!-- <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 8 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="subcity">ክፍለ ከተማ</label>
+        <nz-input-group>
+          <input type="text" nz-input id="subcity" formControlName="subcity" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item> -->
+
+    <!-- <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 8 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="place">ወረዳ</label>
+        <nz-input-group>
+          <input type="text" nz-input id="place" formControlName="place" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item> -->
+
+    <!-- <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 8 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="blockNumber">ብሎክ ቁጥር</label>
+        <nz-input-group>
+          <input
+            type="text"
+            nz-input
+            id="blockNumber"
+            formControlName="blockNumber"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item> -->
+
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 12 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="villageName">የአካባቢው ልዩ መጠሪያ ስም</label>
+        <nz-input-group>
+          <input
+            type="text"
+            nz-input
+            id="villageName"
+            formControlName="villageName"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 12 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="homeNumber">የቤት ቁጥር</label>
+        <nz-input-group>
+          <input
+            type="text"
+            nz-input
+            id="homeNumber"
+            formControlName="homeNumber"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item> -->
+
+    <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 12 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="phoneNumber">ተንቀሳቃሽ ስልክ ቁጥር</label>
+        <nz-input-group>
+          <input
+            type="text"
+            nz-input
+            id="phoneNumber"
+            formControlName="phoneNumber"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 8 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="postalNumber">ፖስታ ሳጥን ቁጥር</label>
+        <nz-input-group>
+          <input
+            type="text"
+            nz-input
+            id="postalNumber"
+            formControlName="postalNumber"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item> -->
+
+    <!-- <nz-form-item nz-col nzSpan="24" [nzSm]="{ span: 8 }">
+      <nz-form-control nzErrorTip="Please Fill The Field!">
+        <label for="email">ኢሜል</label>
+        <nz-input-group>
+          <input type="text" nz-input id="email" formControlName="email" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item> -->
+
+    <div
+      class="button"
+      nz-col
+      nzSpan="24"
+      [nzSm]="{ span: 24 }"
+      type="button"
+      (click)="onEditEnabling()"
+      *ngIf="!new && !editMode"
+    >
+      <button
+        nz-button
+        nzType="primary"
+        type="button"
+        nzBlock
+        (click)="onEditEnabling()"
+      >
+        Edit
+      </button>
+    </div>
+    <div
+      class="button"
+      nz-col
+      nzSpan="24"
+      [nzSm]="{ span: 24 }"
+      *ngIf="new || editMode"
+    >
+      <button
+        nz-button
+        nzType="primary"
+        type="submit"
+        nzBlock
+        [disabled]="!forms.touched && !forms.dirty && !editMode"
+      >
+        {{ editMode ? "Update" : "Register" }}
+      </button>
+    </div>
+    <div
+      class="erase-button"
+      nz-col
+      nzSpan="24"
+      [nzSm]="{ span: 24 }"
+      *ngIf="new"
+    >
+      <button
+        nz-button
+        type="button"
+        nzType="primary"
+        nzDanger
+        (click)="forms.reset()"
+      >
+        Erase Form
+      </button>
+    </div>
+  </form>
+</div>

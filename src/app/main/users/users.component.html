@@ -1,0 +1,165 @@
+<nz-divider nzText="ንዑሳን ክፍላትን መቆጣጠሪያ"></nz-divider>
+<nz-collapse>
+  <nz-collapse-panel nzHeader="አዲስ ንዑሳን አባላትን መጨመሪያ">
+    <i
+      nz-icon
+      class="loading-icon"
+      nzType="loading"
+      nzTheme="outline"
+      *ngIf="isLoading"
+    ></i>
+
+    <form
+      nz-form
+      [formGroup]="form"
+      class="login-form"
+      (ngSubmit)="submitForm()"
+      *ngIf="!isLoading"
+    >
+      <nz-alert nzType="error" [nzMessage]="error" *ngIf="error"></nz-alert>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="የአባሉን ሙሉ ስም ይስገቡ!">
+          <nz-input-group nzPrefixIcon="audit">
+            <input
+              type="text"
+              nz-input
+              formControlName="username"
+              placeholder="የአባሉ ሙሉ ስም"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="የአባሉን ኢሜል ያስገቡ!">
+          <nz-input-group nzPrefixIcon="user">
+            <input
+              type="text"
+              nz-input
+              formControlName="email"
+              placeholder="ኢሜል"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="የይለፍ ፓስወርድ ያስገቡ!">
+          <nz-input-group nzPrefixIcon="lock">
+            <input
+              type="password"
+              nz-input
+              formControlName="password"
+              placeholder="የይለፍ ያስወርድ"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="የአባሉን ድርሻ ይምረጡ!">
+          <nz-select formControlName="role">
+            <nz-option nzValue="" nzLabel="የአባሉን የአገልግሎት ድርሻ ይምረጡ"></nz-option>
+            <nz-option
+              *ngIf="User.role == 'ጽ/ቤት'"
+              nzValue="መረጃ ማየት"
+              nzLabel="መረጃ ማየት"
+            ></nz-option>
+            <nz-option
+              *ngIf="User.role == 'ጽ/ቤት'"
+              nzValue="ትምህርት ክፍል"
+              nzLabel="ትምህርት ክፍል"
+            ></nz-option>
+            <nz-option
+              *ngIf="User.role == 'ጽ/ቤት'"
+              nzValue="መዝሙር ክፍል"
+              nzLabel="መዝሙር ክፍል"
+            ></nz-option>
+            <nz-option
+              *ngIf="User.role == 'ጽ/ቤት'"
+              nzValue="አባላት ጉዳይ"
+              nzLabel="አባላት ጉዳይ"
+            ></nz-option>
+            <nz-option
+              *ngIf="User.role == 'ትምህርት ክፍል'"
+              nzValue="ትምህርት ቁጥጥር"
+              nzLabel="ትምህርት ቁጥጥር"
+            ></nz-option>
+            <nz-option
+              *ngIf="User.role == 'ትምህርት ክፍል'"
+              nzValue="ቤተ መጽሀፍት"
+              nzLabel="ቤተ መጽሀፍት"
+            ></nz-option>
+            <nz-option
+              *ngIf="User.role == 'መዝሙር ክፍል'"
+              nzValue="መዝሙር ቁጥጥር"
+              nzLabel="መዝሙር ቁጥጥር"
+            ></nz-option>
+            <nz-option
+              *ngIf="User.role == 'አባላት ጉዳይ'"
+              nzValue="መልዕክት ቁጥጥር"
+              nzLabel="መልዕክት ቁጥጥር"
+            ></nz-option>
+            <nz-option
+              *ngIf="User.role == 'አባላት ጉዳይ'"
+              nzValue="አባላት ቁጥጥር"
+              nzLabel="አባላት ቁጥጥር"
+            ></nz-option>
+            <nz-option
+              *ngIf="User.role == 'አባላት ጉዳይ'"
+              nzValue="መረጃ እና መዛግብት"
+              nzLabel="መረጃ እና መዛግብት"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <div nz-row class="login-form-margin">
+        <div nz-col [nzSpan]="12">
+          <label nz-checkbox formControlName="status">
+            <span>ክፍት ነው?</span>
+          </label>
+        </div>
+      </div>
+      <button
+        nz-button
+        class="login-form-button login-form-margin"
+        [nzType]="'primary'"
+      >
+        አባሉን መዝግብ
+      </button>
+    </form>
+  </nz-collapse-panel>
+</nz-collapse>
+
+<nz-divider nzDashed [nzText]="text">
+  <ng-template #text
+    ><i nz-icon nzType="unordered-list" nzTheme="outline"></i> በዚህ ክፍል ስር ያሉ
+    ክፍሎች መረጃ</ng-template
+  >
+</nz-divider>
+
+<nz-list
+  [nzBordered]="true"
+  *ngFor="let account of Accounts | userFilter: User.role; let i = index"
+>
+  <nz-list-item>
+    <ng-container>
+      <nz-list-item-meta
+        nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+        [nzDescription]="account.role"
+      >
+        <nz-list-item-meta-title>
+          <a>{{ account.username }}</a>
+        </nz-list-item-meta-title>
+      </nz-list-item-meta>
+      <nz-switch
+        [(ngModel)]="account.status"
+        [nzCheckedChildren]="checkedTemplate"
+        [nzUnCheckedChildren]="unCheckedTemplate"
+        (click)="statusChange(i)"
+      ></nz-switch>
+      <ul nz-list-item-actions></ul>
+    </ng-container>
+  </nz-list-item>
+</nz-list>
+
+<!-- switch templates -->
+<ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
+<ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>

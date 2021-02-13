@@ -1,0 +1,107 @@
+<nz-header nz-row>
+  <div nz-col nzSpan="24">
+    <p class="logo">ሐይመተ አብርሃም ሰንበት ት/ቤት</p>
+  </div>
+  <!-- <div nz-col nzSpan="3" nzOffset="9">
+    <button nz-button nzType="primary" nzSize="large" (click)="showModal()">
+      <i nz-icon nzType="import"></i> Login
+    </button>
+  </div> -->
+</nz-header>
+
+<!-- modal starts -->
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="LOGIN - FORM"
+  (nzOnCancel)="handleCancel()"
+>
+  <nz-alert
+    *ngIf="errorMessage"
+    nzType="error"
+    [nzMessage]="errorMessage"
+  ></nz-alert>
+  <i
+    *ngIf="isLoading"
+    class="loading"
+    nz-icon
+    nzType="loading"
+    nzTheme="outline"
+  ></i>
+  <div *ngIf="!isLoading">
+    <!-- login form starts -->
+    <form
+      nz-form
+      [formGroup]="form"
+      class="login-form"
+      (ngSubmit)="submitForm()"
+    >
+      <nz-form-item>
+        <nz-form-control nzErrorTip="incorrect Email!">
+          <nz-input-group nzPrefixIcon="user">
+            <input
+              type="email"
+              nz-input
+              formControlName="email"
+              placeholder="email"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="incorrect password length!">
+          <nz-input-group nzPrefixIcon="lock">
+            <input
+              type="password"
+              nz-input
+              formControlName="password"
+              placeholder="Password"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <div nz-row class="login-form-margin">
+        <div nz-col [nzSpan]="12">
+          <label nz-checkbox>
+            <span>Remember me</span>
+          </label>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <a class="login-form-forgot">Forgot password</a>
+        </div>
+      </div>
+      <button
+        nz-button
+        class="login-form-button login-form-margin"
+        [nzType]="'primary'"
+      >
+        Log in
+      </button>
+    </form>
+    <!-- login form ends -->
+  </div>
+  <div *nzModalFooter></div>
+</nz-modal>
+<!-- modal ends -->
+
+<!-- <button
+  nz-button
+  nzType="primary"
+  class="gotoLib"
+  (click)="gotoLibrary()"
+></button> -->
+<div nz-row>
+  <nz-button-group
+    nz-col
+    nzSpan="24"
+    nzOffset="4"
+    [nzSm]="{ offset: 10 }"
+    nzSize="size"
+  >
+    <button nz-button nzType="primary" (click)="showModal()">
+      <i nz-icon nzType="import"></i> መግቢያ
+    </button>
+    <button nz-button nzType="primary" (click)="gotoLibrary()">
+      ወደ ቤተ-መጽሐፍት <i nz-icon nzType="right"></i>
+    </button>
+  </nz-button-group>
+</div>
